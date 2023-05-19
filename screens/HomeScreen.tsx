@@ -1,17 +1,18 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {Button} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   return (
-    <View>
+    <SafeAreaView>
       <Button
         title="Detail 1 열기"
         onPress={() => {
-          // navigation.navigate('Detail');
+          // navigation.navigate('Detail', {id: 1});
           navigation.push('Detail', {id: 1});
         }}
       />
@@ -29,7 +30,11 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           navigation.push('Detail', {id: 3});
         }}
       />
-    </View>
+      <Button
+        title="Headerless 화면 열기"
+        onPress={() => navigation.push('Headerless')}
+      />
+    </SafeAreaView>
   );
 };
 export default HomeScreen;
