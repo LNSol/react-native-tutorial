@@ -1,61 +1,78 @@
 import React from 'react';
+import {View, Text, Button} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
-import DetailScreen from './screens/DetailScreen';
-import HeaderlessScreen from './screens/HeaderlessScreen';
+import {
+  createDrawerNavigator,
+  DrawerScreenProps,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
 
-export type RootStackParamList = {
+type RootDrawerParamList = {
   Home: undefined;
-  Detail: {id: number};
-  Headerless: undefined;
+  Setting: undefined;
+};
+type HomeScreenProps = DrawerScreenProps<RootDrawerParamList, 'Home'>;
+type SettingScreenProps = DrawerScreenProps<RootDrawerParamList, 'Setting'>;
+
+const Drawer = createDrawerNavigator<RootDrawerParamList>();
+
+const HomeScreen = ({navigation}: HomeScreenProps) => {
+  return (
+    <View>
+      <Text>Home Screen</Text>
+      <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
+      <Button
+        title="Setting 열기"
+        onPress={() => navigation.navigate('Setting')}
+      />
+    </View>
+  );
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const SettingScreen = ({navigation}: SettingScreenProps) => {
+  return (
+    <View>
+      <Text>Setting Screen</Text>
+      <Button title="돌아가기" onPress={() => navigation.goBack()} />
+    </View>
+  );
+};
+
+const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
+  return (
+    <SafeAreaView>
+      <Text>Custom Drawer</Text>
+      <Button title="Drawer 닫기" onPress={() => navigation.closeDrawer()} />
+    </SafeAreaView>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Drawer.Navigator
         initialRouteName="Home"
+        backBehavior="history"
+        // drawerContent={CustomDrawer}
         screenOptions={{
-          headerShown: false,
+          drawerPosition: 'left',
+          drawerActiveBackgroundColor: '#46c4ea',
+          drawerActiveTintColor: '#fff',
         }}>
-        <Stack.Screen
+        <Drawer.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            title: '홈',
-            // 헤더 블록에 대한 스타일
-            headerStyle: {
-              backgroundColor: '#29b6f6',
-            },
-            // 헤더의 텍스트, 버튼들 색상
-            headerTintColor: '#fff',
-            // 타이틀 텍스트의 스타일
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 20,
-            },
-          }}
+          options={{title: '홈'}}
         />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={({route}) => ({
-            title: `상세 페이지 - ${route.params.id}`,
-            headerBackTitle: '',
-          })}
+        <Drawer.Screen
+          name="Setting"
+          component={SettingScreen}
+          options={{title: '설정'}}
         />
-        <Stack.Screen
-          name="Headerless"
-          component={HeaderlessScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
+
 export default App;
