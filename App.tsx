@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, TextInput} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,6 +20,7 @@ const Tab = createBottomTabNavigator<RootParamList>();
 const HomeScreen = () => (
   <View>
     <Text>Home Screen</Text>
+    <TextInput placeholder="여기가 텍스트 인풋 박스" />
   </View>
 );
 const HomeIcon = ({color, size}: IconProps) => (
@@ -61,11 +62,18 @@ const MyIcon = ({color, size}: IconProps) => (
 
 const App = () => (
   <NavigationContainer>
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarAllowFontScaling: false,
+        tabBarHideOnKeyboard: false,
+        // tabBarShowLabel: false,
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
+          title: '홈',
           tabBarIcon: HomeIcon,
         }}
       />
@@ -73,6 +81,7 @@ const App = () => (
         name="Chat"
         component={ChatScreen}
         options={{
+          title: '채팅',
           tabBarIcon: ChatIcon,
         }}
       />
@@ -80,6 +89,7 @@ const App = () => (
         name="Apply"
         component={ApplyScreen}
         options={{
+          title: '신청',
           tabBarIcon: ApplyIcon,
         }}
       />
@@ -87,6 +97,7 @@ const App = () => (
         name="Cart"
         component={CartScreen}
         options={{
+          title: '장바구니',
           tabBarIcon: CartIcon,
         }}
       />
@@ -94,6 +105,7 @@ const App = () => (
         name="My"
         component={MyScreen}
         options={{
+          title: '내 정보',
           tabBarIcon: MyIcon,
         }}
       />
