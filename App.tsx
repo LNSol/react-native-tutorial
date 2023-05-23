@@ -1,78 +1,103 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {
-  createDrawerNavigator,
-  DrawerScreenProps,
-  DrawerContentComponentProps,
-} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-type RootDrawerParamList = {
+type RootParamList = {
   Home: undefined;
-  Setting: undefined;
+  Chat: undefined;
+  Apply: undefined;
+  Cart: undefined;
+  My: undefined;
 };
-type HomeScreenProps = DrawerScreenProps<RootDrawerParamList, 'Home'>;
-type SettingScreenProps = DrawerScreenProps<RootDrawerParamList, 'Setting'>;
+type IconProps = {
+  color: string;
+  size: number;
+};
+const Tab = createBottomTabNavigator<RootParamList>();
 
-const Drawer = createDrawerNavigator<RootDrawerParamList>();
+const HomeScreen = () => (
+  <View>
+    <Text>Home Screen</Text>
+  </View>
+);
+const HomeIcon = ({color, size}: IconProps) => (
+  <Icon name="home" color={color} size={size} />
+);
 
-const HomeScreen = ({navigation}: HomeScreenProps) => {
-  return (
-    <View>
-      <Text>Home Screen</Text>
-      <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
-      <Button
-        title="Setting 열기"
-        onPress={() => navigation.navigate('Setting')}
+const ChatScreen = () => (
+  <View>
+    <Text>Chat Screen</Text>
+  </View>
+);
+const ChatIcon = ({color, size}: IconProps) => (
+  <Icon name="message" color={color} size={size} />
+);
+const ApplyScreen = () => (
+  <View>
+    <Text>Apply Screen</Text>
+  </View>
+);
+const ApplyIcon = ({color, size}: IconProps) => (
+  <Icon name="add" color={color} size={size} />
+);
+const CartScreen = () => (
+  <View>
+    <Text>Cart Screen</Text>
+  </View>
+);
+const CartIcon = ({color, size}: IconProps) => (
+  <Icon name="shopping-cart" color={color} size={size} />
+);
+const MyScreen = () => (
+  <View>
+    <Text>My Screen</Text>
+  </View>
+);
+const MyIcon = ({color, size}: IconProps) => (
+  <Icon name="person" color={color} size={size} />
+);
+
+const App = () => (
+  <NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: HomeIcon,
+        }}
       />
-    </View>
-  );
-};
-
-const SettingScreen = ({navigation}: SettingScreenProps) => {
-  return (
-    <View>
-      <Text>Setting Screen</Text>
-      <Button title="돌아가기" onPress={() => navigation.goBack()} />
-    </View>
-  );
-};
-
-const CustomDrawer = ({navigation}: DrawerContentComponentProps) => {
-  return (
-    <SafeAreaView>
-      <Text>Custom Drawer</Text>
-      <Button title="Drawer 닫기" onPress={() => navigation.closeDrawer()} />
-    </SafeAreaView>
-  );
-};
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        backBehavior="history"
-        // drawerContent={CustomDrawer}
-        screenOptions={{
-          drawerPosition: 'left',
-          drawerActiveBackgroundColor: '#46c4ea',
-          drawerActiveTintColor: '#fff',
-        }}>
-        <Drawer.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: '홈'}}
-        />
-        <Drawer.Screen
-          name="Setting"
-          component={SettingScreen}
-          options={{title: '설정'}}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-};
-
+      <Tab.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{
+          tabBarIcon: ChatIcon,
+        }}
+      />
+      <Tab.Screen
+        name="Apply"
+        component={ApplyScreen}
+        options={{
+          tabBarIcon: ApplyIcon,
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: CartIcon,
+        }}
+      />
+      <Tab.Screen
+        name="My"
+        component={MyScreen}
+        options={{
+          tabBarIcon: MyIcon,
+        }}
+      />
+    </Tab.Navigator>
+  </NavigationContainer>
+);
 export default App;
