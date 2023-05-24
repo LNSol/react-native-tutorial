@@ -8,18 +8,13 @@ export type StackScreenParamList = {
   Main: undefined;
   Chat: undefined;
 };
+
 const Stack = createStackNavigator<StackScreenParamList>();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Main"
-        component={MainScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator initialRouteName="Main">
+      <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
     </Stack.Navigator>
   </NavigationContainer>
