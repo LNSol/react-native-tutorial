@@ -51,6 +51,10 @@ const MainScreen = () => (
     initialRouteName="Home"
     screenOptions={{
       tabBarShowLabel: false,
+      tabBarIndicatorStyle: {
+        backgroundColor: '#46c4ea',
+      },
+      tabBarActiveTintColor: '#46c4ea',
     }}>
     <Tab.Screen
       name="Home"
