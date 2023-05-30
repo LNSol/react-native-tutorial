@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
-import {CompositeScreenProps} from '@react-navigation/native';
+import {
+  CompositeScreenProps,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {
   createMaterialBottomTabNavigator,
   MaterialBottomTabScreenProps,
 } from '@react-navigation/material-bottom-tabs';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackScreenProps, StackNavigationProp} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StackScreenParamList} from '../App';
 
@@ -27,12 +31,36 @@ type HomeScreenProps = CompositeScreenProps<
 
 const Tab = createMaterialBottomTabNavigator<TabScreenParamList>();
 
-const HomeScreen = ({navigation}: HomeScreenProps) => (
-  <View>
-    <Text>Home Screen</Text>
-    <Button title="App 채팅 이동하기" onPress={() => navigation.push('Chat')} />
-  </View>
-);
+// const OpenChatButton = ({navigation}: Pick<HomeScreenProps, 'navigation'>) => {
+const OpenChatButton = () => {
+  const navigation = useNavigation<StackNavigationProp<StackScreenParamList>>();
+  return (
+    // <Button title="App 채팅 이동하기" onPress={() => navigation.push('Chat')} />
+    <View>
+      <Button
+        title="App 채팅 이동하기"
+        onPress={() => console.log(navigation.push('Chat', {myId: 1}))}
+      />
+    </View>
+  );
+};
+
+const HomeScreen = ({navigation}: HomeScreenProps) => {
+  useFocusEffect(
+    useCallback(() => {
+      console.log('이 화면을 보고 있어요.');
+      return () => console.log('다른 화면으로 넘어갔수');
+    }, []),
+  );
+  return (
+    <View>
+      <Text>Home Screen</Text>
+      {/* <Button title="App 채팅 이동하기" onPress={() => navigation.push('Chat')} /> */}
+      {/* <OpenChatButton navigation={navigation} /> */}
+      <OpenChatButton />
+    </View>
+  );
+};
 const ApplyScreen = () => <Text>Apply Screen</Text>;
 const CartScreen = () => <Text>Cart Screen</Text>;
 const MyScreen = () => <Text>My Screen</Text>;

@@ -12,7 +12,7 @@ type TScreen = 'Home' | 'Apply' | 'Cart' | 'My';
 
 export type StackScreenParamList = {
   Main: undefined;
-  Chat: undefined;
+  Chat: {myId: number};
 };
 
 const Stack = createStackNavigator<StackScreenParamList>();
