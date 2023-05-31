@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
 import {
+  CompositeNavigationProp,
   CompositeScreenProps,
   useFocusEffect,
   useNavigation,
@@ -8,6 +9,7 @@ import {
 import {
   createMaterialBottomTabNavigator,
   MaterialBottomTabScreenProps,
+  MaterialBottomTabNavigationProp,
 } from '@react-navigation/material-bottom-tabs';
 import {StackScreenProps, StackNavigationProp} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -31,21 +33,37 @@ type HomeScreenProps = CompositeScreenProps<
 
 const Tab = createMaterialBottomTabNavigator<TabScreenParamList>();
 
+type CompositedNavigationProp = CompositeNavigationProp<
+  MaterialBottomTabNavigationProp<TabScreenParamList, 'Home'>,
+  StackNavigationProp<StackScreenParamList>
+>;
+
+// const OpenChatButton = ({onPress}: {onPress: () => void}) => {
 // const OpenChatButton = ({navigation}: Pick<HomeScreenProps, 'navigation'>) => {
+// const OpenChatButton = ({
+//   navigation,
+//   route,
+// }: Pick<HomeScreenProps, 'navigation' | 'route'>) => {
 const OpenChatButton = () => {
-  const navigation = useNavigation<StackNavigationProp<StackScreenParamList>>();
+  // const navigation = useNavigation();
+  // const navigation = useNavigation<StackNavigationProp<StackScreenParamList>>();
+  const navigation = useNavigation<CompositedNavigationProp>();
+  // console.log('HomeScreen의 route 객체임 > ', route);
   return (
     // <Button title="App 채팅 이동하기" onPress={() => navigation.push('Chat')} />
     <View>
       <Button
         title="App 채팅 이동하기"
-        onPress={() => console.log(navigation.push('Chat', {myId: 1}))}
+        // onPress={onPress}
+        onPress={() => navigation.push('Chat', {myId: 1})}
       />
+      <Button title="My 이동하기" onPress={() => navigation.navigate('My')} />
     </View>
   );
 };
 
-const HomeScreen = ({navigation}: HomeScreenProps) => {
+const HomeScreen = ({navigation, route}: HomeScreenProps) => {
+  console.log('navigation > ', navigation, 'route > ', route);
   useFocusEffect(
     useCallback(() => {
       console.log('이 화면을 보고 있어요.');
@@ -58,6 +76,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       {/* <Button title="App 채팅 이동하기" onPress={() => navigation.push('Chat')} /> */}
       {/* <OpenChatButton navigation={navigation} /> */}
       <OpenChatButton />
+      {/* <OpenChatButton navigation={navigation} route={route} /> */}
     </View>
   );
 };
