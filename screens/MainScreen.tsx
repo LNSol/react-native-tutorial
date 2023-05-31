@@ -23,7 +23,7 @@ type TabScreenParamList = {
   Home: undefined;
   Apply: undefined;
   Cart: undefined;
-  My: undefined;
+  My: {name: string};
 };
 
 type HomeScreenProps = CompositeScreenProps<
@@ -57,7 +57,10 @@ const OpenChatButton = () => {
         // onPress={onPress}
         onPress={() => navigation.push('Chat', {myId: 1})}
       />
-      <Button title="My 이동하기" onPress={() => navigation.navigate('My')} />
+      <Button
+        title="My 이동하기"
+        onPress={() => navigation.navigate('My', {name: 'Lim'})}
+      />
     </View>
   );
 };
@@ -82,7 +85,11 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
 };
 const ApplyScreen = () => <Text>Apply Screen</Text>;
 const CartScreen = () => <Text>Cart Screen</Text>;
-const MyScreen = () => <Text>My Screen</Text>;
+const MyScreen = ({
+  route,
+}: MaterialBottomTabScreenProps<TabScreenParamList, 'My'>) => (
+  <Text>My Screen - My name: {route.params.name}</Text>
+);
 
 const HomeIcon = ({color}: TIconProps) => (
   <Icon name="home" color={color} size={24} />
@@ -97,47 +104,52 @@ const MyIcon = ({color}: TIconProps) => (
   <Icon name="person" color={color} size={24} />
 );
 
-const MainScreen = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    shifting={true}
-    labeled={false}
-    activeColor="#46c4ea"
-    inactiveColor="#ddd"
-    barStyle={styles.tabBar}>
-    <Tab.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{
-        tabBarIcon: HomeIcon,
-        tabBarBadge: 'new',
-      }}
-    />
-    <Tab.Screen
-      name="Apply"
-      component={ApplyScreen}
-      options={{
-        tabBarIcon: ApplyIcon,
-      }}
-    />
-    <Tab.Screen
-      name="Cart"
-      component={CartScreen}
-      options={{
-        tabBarIcon: CartIcon,
-        tabBarBadge: 2,
-      }}
-    />
-    <Tab.Screen
-      name="My"
-      component={MyScreen}
-      options={{
-        tabBarIcon: MyIcon,
-        tabBarBadge: true,
-      }}
-    />
-  </Tab.Navigator>
-);
+const MainScreen = () => {
+  return (
+    <>
+      <Text>Main Screen에서 My의 파라미터 사용하기</Text>
+      <Tab.Navigator
+        initialRouteName="Home"
+        shifting={true}
+        labeled={false}
+        activeColor="#46c4ea"
+        inactiveColor="#ddd"
+        barStyle={styles.tabBar}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: HomeIcon,
+            tabBarBadge: 'new',
+          }}
+        />
+        <Tab.Screen
+          name="Apply"
+          component={ApplyScreen}
+          options={{
+            tabBarIcon: ApplyIcon,
+          }}
+        />
+        <Tab.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{
+            tabBarIcon: CartIcon,
+            tabBarBadge: 2,
+          }}
+        />
+        <Tab.Screen
+          name="My"
+          component={MyScreen}
+          options={{
+            tabBarIcon: MyIcon,
+            tabBarBadge: true,
+          }}
+        />
+      </Tab.Navigator>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   tabBar: {
