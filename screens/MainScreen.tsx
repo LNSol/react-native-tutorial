@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
 import {
   CompositeNavigationProp,
@@ -66,13 +66,21 @@ const OpenChatButton = () => {
 };
 
 const HomeScreen = ({navigation, route}: HomeScreenProps) => {
-  console.log('navigation > ', navigation, 'route > ', route);
+  const [count, setCount] = useState(0);
+  // console.log('navigation > ', navigation, 'route > ', route);
+
+  useEffect(() => {
+    console.log('useEffect 탐~');
+    return () => console.log('useEffect의 클린업~');
+  }, [count]);
+
   useFocusEffect(
     useCallback(() => {
-      console.log('이 화면을 보고 있어요.');
-      return () => console.log('다른 화면으로 넘어갔수');
-    }, []),
+      console.log('Focus on HomeScreen, count > ', count);
+      return () => console.log('HomeScreen loses focus');
+    }, [count]),
   );
+
   return (
     <View>
       <Text>Home Screen</Text>
@@ -80,6 +88,9 @@ const HomeScreen = ({navigation, route}: HomeScreenProps) => {
       {/* <OpenChatButton navigation={navigation} /> */}
       <OpenChatButton />
       {/* <OpenChatButton navigation={navigation} route={route} /> */}
+      <Button title="-1" onPress={() => setCount(count - 1)} />
+      <Button title="+1" onPress={() => setCount(count + 1)} />
+      <Text>Count: {count}</Text>
     </View>
   );
 };
@@ -87,9 +98,9 @@ const ApplyScreen = () => <Text>Apply Screen</Text>;
 const CartScreen = () => <Text>Cart Screen</Text>;
 const MyScreen = ({
   route,
-}: MaterialBottomTabScreenProps<TabScreenParamList, 'My'>) => (
-  <Text>My Screen - My name: {route.params.name}</Text>
-);
+}: MaterialBottomTabScreenProps<TabScreenParamList, 'My'>) => {
+  return <Text>My Screen - My name: {route.params?.name || 'LNSol'}</Text>;
+};
 
 const HomeIcon = ({color}: TIconProps) => (
   <Icon name="home" color={color} size={24} />
