@@ -29,6 +29,10 @@ import {StackScreenParamList} from '../App';
 
 type ChatScreenProps = StackScreenProps<StackScreenParamList, 'Chat'>;
 
+const MyIdText = ({route}: Pick<ChatScreenProps, 'route'>) => {
+  return <Text>MyId: {route.params.myId}</Text>;
+};
+
 const ChatScreen = ({route, navigation}: ChatScreenProps) => {
   useEffect(() => {
     navigation.setOptions({
@@ -39,7 +43,7 @@ const ChatScreen = ({route, navigation}: ChatScreenProps) => {
   return (
     <View>
       <Text>Chat Screen</Text>
-      <Text>MyId: {route.params.myId}</Text>
+      <MyIdText route={route} />
     </View>
   );
 };
