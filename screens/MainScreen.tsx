@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
 import {
   CompositeNavigationProp,
@@ -67,7 +67,7 @@ const OpenChatButton = () => {
 
 const HomeScreen = ({navigation, route}: HomeScreenProps) => {
   const [count, setCount] = useState(0);
-  // console.log('navigation > ', navigation, 'route > ', route);
+  console.log('navigation > ', navigation, 'route > ', route);
 
   useEffect(() => {
     console.log('useEffect 탐~');
